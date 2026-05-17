@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cho Lon 3D Market</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="Cho Lon 3D Market">
+          <span class="brand-mark">CL</span>
+          <span>
+            <strong>Cho Lon 3D</strong>
+            <small>Market network</small>
+          </span>
+        </a>
+
+        <label class="global-search" for="marketSearch">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="marketSearch" type="search" autocomplete="off" />
+        </label>
+
+        <nav class="top-actions" aria-label="Điều hướng chính">
+          <button class="ghost-button" type="button" data-scroll-target="explore">Khám phá</button>
+          <button class="ghost-button" type="button" data-scroll-target="merchant">Quản trị kiot</button>
+          <button class="cart-button" type="button" id="cartToggle" aria-haspopup="dialog">
+            <span>Giỏ hàng</span>
+            <strong id="cartCount">0</strong>
+          </button>
+        </nav>
+      </header>
+
+      <main id="home">
+        <section class="hero-grid" aria-labelledby="homeTitle">
+          <div class="hero-copy">
+            <p class="eyebrow">Mạng lưới chợ 3D</p>
+            <h1 id="homeTitle">Tìm chợ, tìm kiot, xem hàng và đặt mua trong cùng một không gian.</h1>
+            <p class="hero-text">
+              Prototype này mô phỏng một chợ lớn gồm nhiều chợ nhỏ, mỗi chợ có các kiot định vị
+              trực quan. Khách có thể tìm kiếm, xem landing page kiot, xem sản phẩm và đặt hàng.
+            </p>
+            <div class="hero-controls">
+              <button class="primary-button" type="button" data-scroll-target="explore">Vào mô hình chợ</button>
+              <button class="secondary-button" type="button" data-scroll-target="merchant">Mở quản trị mẫu</button>
+            </div>
+            <dl class="hero-metrics" aria-label="Số liệu mô phỏng">
+              <div>
+                <dt>03</dt>
+                <dd>chợ nhỏ</dd>
+              </div>
+              <div>
+                <dt>09</dt>
+                <dd>kiot định vị</dd>
+              </div>
+              <div>
+                <dt>27</dt>
+                <dd>sản phẩm mẫu</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="hero-visual" aria-label="Ảnh mô phỏng chợ 3D">
+            <div class="hero-perspective">
+              <div class="hero-market-model">
+                <span class="model-road road-a"></span>
+                <span class="model-road road-b"></span>
+                <span class="model-zone zone-a">Chợ đặc sản</span>
+                <span class="model-zone zone-b">Chợ ẩm thực</span>
+                <span class="model-zone zone-c">Chợ thủ công</span>
+                <span class="model-kiosk k1"></span>
+                <span class="model-kiosk k2"></span>
+                <span class="model-kiosk k3"></span>
+                <span class="model-kiosk k4"></span>
+                <span class="model-pin"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="workspace" id="explore" aria-label="Không gian mô phỏng chợ">
+          <aside class="panel market-panel">
+            <div class="section-heading">
+              <p class="eyebrow">Chợ lớn</p>
+              <h2>Bản đồ chợ nhỏ</h2>
+            </div>
+            <div class="market-tabs" id="marketTabs" role="tablist" aria-label="Danh sách chợ"></div>
+            <div class="quick-filters" aria-label="Bộ lọc nhanh">
+              <button type="button" class="filter-chip active" data-filter="all">Tất cả</button>
+              <button type="button" class="filter-chip" data-filter="Đặc sản">Đặc sản</button>
+              <button type="button" class="filter-chip" data-filter="Ẩm thực">Ẩm thực</button>
+              <button type="button" class="filter-chip" data-filter="Thủ công">Thủ công</button>
+            </div>
+            <div class="kiosk-list" id="kioskList" aria-live="polite"></div>
+          </aside>
+
+          <section class="scene-panel" aria-labelledby="sceneTitle">
+            <div class="scene-toolbar">
+              <div>
+                <p class="eyebrow">Không gian 3D</p>
+                <h2 id="sceneTitle">Mô hình vị trí kiot</h2>
+              </div>
+              <div class="scene-actions">
+                <button class="icon-button" type="button" id="zoomIn" aria-label="Phóng to" title="Phóng to">+</button>
+                <button class="icon-button" type="button" id="zoomOut" aria-label="Thu nhỏ" title="Thu nhỏ">-</button>
+                <button class="icon-button" type="button" id="resetCamera" aria-label="Đặt lại góc nhìn" title="Đặt lại góc nhìn">↺</button>
+              </div>
+            </div>
+            <div class="market-scene" id="marketScene">
+              <div class="scene-fallback" id="sceneFallback">
+                <strong>Đang tải mô hình 3D</strong>
+                <span>Nếu trình duyệt không tải được Three.js, bản đồ 2D bên cạnh vẫn hoạt động.</span>
+              </div>
+            </div>
+          </section>
+
+          <aside class="panel map-panel">
+            <div class="section-heading">
+              <p class="eyebrow">Google Map style</p>
+              <h2>Sơ đồ định vị</h2>
+            </div>
+            <div class="floor-map" id="floorMap" aria-label="Sơ đồ kiot có thể click"></div>
+            <div class="location-card" id="locationCard"></div>
+          </aside>
+        </section>
+
+        <section class="kiosk-landing" id="kioskLanding" aria-live="polite"></section>
+
+        <section class="merchant-studio" id="merchant" aria-labelledby="merchantTitle">
+          <div class="section-heading">
+            <p class="eyebrow">Quản trị nội dung</p>
+            <h2 id="merchantTitle">Chủ kiot cập nhật landing page và sản phẩm</h2>
+          </div>
+          <div class="merchant-layout">
+            <aside class="panel account-panel">
+              <label for="accountSelect">Tài khoản đang dùng</label>
+              <select id="accountSelect"></select>
+              <p id="accountHint"></p>
+            </aside>
+            <form class="panel product-form" id="productForm">
+              <div class="form-grid">
+                <label>
+                  Kiot
+                  <select id="ownerKioskSelect" required></select>
+                </label>
+                <label>
+                  Tên sản phẩm
+                  <input id="productName" type="text" required placeholder="Ví dụ: Mắm cá linh đặc biệt" />
+                </label>
+                <label>
+                  Danh mục
+                  <input id="productCategory" type="text" required placeholder="Đặc sản, đồ ăn, thủ công..." />
+                </label>
+                <label>
+                  Giá bán
+                  <input id="productPrice" type="number" min="0" step="1000" required placeholder="120000" />
+                </label>
+                <label class="wide">
+                  Mô tả
+                  <textarea id="productDescription" rows="4" required placeholder="Mô tả nguồn gốc, hương vị, quy cách đóng gói..."></textarea>
+                </label>
+                <label>
+                  Upload ảnh
+                  <input id="productImage" type="file" accept="image/*" />
+                </label>
+                <label>
+                  Upload video
+                  <input id="productVideo" type="file" accept="video/*" />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button class="primary-button" type="submit">Thêm sản phẩm</button>
+                <button class="secondary-button" type="button" id="clearUploads">Xóa file đã chọn</button>
+              </div>
+              <p class="form-note">
+                Prototype dùng dữ liệu cục bộ trong trình duyệt. Khi chuyển sang backend, quyền sửa sẽ được kiểm soát bằng tài khoản, vai trò và mã kiot.
+              </p>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="product-dialog" id="productDialog">
+      <button class="dialog-close" type="button" id="closeProductDialog" aria-label="Đóng">×</button>
+      <div id="productDialogContent"></div>
+    </dialog>
+
+    <aside class="cart-drawer" id="cartDrawer" aria-label="Giỏ hàng và thanh toán" aria-hidden="true">
+      <div class="cart-header">
+        <div>
+          <p class="eyebrow">Đặt hàng</p>
+          <h2>Giỏ hàng</h2>
+        </div>
+        <button class="icon-button" type="button" id="closeCart" aria-label="Đóng giỏ hàng">×</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <form class="checkout-form" id="checkoutForm">
+        <label>
+          Tên người nhận
+          <input type="text" id="buyerName" required placeholder="Nguyễn Văn A" />
+        </label>
+        <label>
+          Số điện thoại
+          <input type="tel" id="buyerPhone" required placeholder="090..." />
+        </label>
+        <label>
+          Địa chỉ nhận hàng
+          <textarea id="buyerAddress" rows="3" required placeholder="Số nhà, phường/xã, quận/huyện, tỉnh/thành"></textarea>
+        </label>
+        <label>
+          Kênh thanh toán
+          <select id="paymentChannel" required>
+            <option value="cod">Thanh toán khi nhận hàng</option>
+            <option value="bank">Chuyển khoản ngân hàng</option>
+            <option value="wallet">Ví điện tử</option>
+            <option value="card">Thẻ nội địa/quốc tế</option>
+          </select>
+        </label>
+        <div class="order-total">
+          <span>Tổng đơn</span>
+          <strong id="cartTotal">0đ</strong>
+        </div>
+        <button class="primary-button stretch" type="submit">Xác nhận đặt hàng</button>
+        <p class="checkout-status" id="checkoutStatus" role="status"></p>
+      </form>
+    </aside>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
